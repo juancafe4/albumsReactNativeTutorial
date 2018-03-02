@@ -1,15 +1,14 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import AlbumDetail from './AlbumDetail';
+import { ScrollView } from 'react-native';
 import axios from 'axios';
 
-class AlbumList extends React.Component {
-  constructor(props) {
-    state = {
-      albums: []
-    };
-  }
+export default class AlbumList extends React.Component {
+  state = {
+    albums: []
+  };
   componentWillMount() {
-    fetch('https://rallycoding.herokuapp.com/api/music_albums')
+    axios.get('https://rallycoding.herokuapp.com/api/music_albums')
       .then(res => {
         this.setState({albums: res.data});
       }).catch(err => {
@@ -19,17 +18,17 @@ class AlbumList extends React.Component {
   renderAlbums() {
     return this.state.albums.map(data => {
       return (
-        <Text>{album.title}</Text>
+        <AlbumDetail key={data.title} album={data}/>
       );
     });
   }
   render() {
     return (
-      <View>
+      <ScrollView>
         {this.renderAlbums()}
-      </View>
+      </ScrollView>
     );
   }
 }
 
-export default AlbumList;
+
